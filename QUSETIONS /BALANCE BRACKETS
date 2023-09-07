@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#define max 20
+char stack[max];
+int head =-1;
+
+void push(char brac){
+    if(head==max-1){
+        printf("overflow");
+        return;
+    }
+
+    head++;
+    for(int i=head ;i>=1;i--){
+        stack[i]=stack[i-1];
+    }
+    stack[0]=brac;
+}
+
+char pop(){
+    if(head<0){
+        printf("UNDERFLOW");
+        exit(1);
+    }
+    char value=stack[0]; 
+    for(int i = 0;i<head;i++){
+        stack[i]=stack[i+1];
+    }
+    head--;
+    return value;
+}
+int main()
+{
+    char brackets[100];
+    fgets(brackets,sizeof(brackets)-1,stdin);
+for(int i=0;i<strlen(brackets);i++)
+{
+    if(brackets[i]=='(' || brackets[i]=='[' || brackets[i]=='{'  ){
+        push(brackets[i]);
+    }
+    else if(brackets[i]==')' || brackets[i]==']' || brackets[i]=='}' ){
+        if(head<0){
+            printf("INVALID");
+        }
+        else{
+           char check= pop();
+           if(check =='(' && brackets[i] !=')' || check == '[' && brackets[i] != ']' || check == '{' && brackets[i] != '}'){
+                printf("invalid brackets");
+                exit(1);
+           }
+        }
+    }
+}
+
+if(head<0){
+    printf("VALID");
+}
+else{
+    printf("left are more than the rihgt");
+}
+    return 0;
+}
